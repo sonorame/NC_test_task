@@ -1,0 +1,33 @@
+@startuml
+
+skinparam {
+    MaxMessageSize 200
+}
+skinparam sequence{
+    ParticipantPadding 30
+    MessageAlign center
+}
+autonumber "<b>[0]"
+
+actor Пользователь
+participant Приложение as App
+participant Бэк as BFF
+database БД as DB
+
+Пользователь -> App: Пользователь нажимает на вкладку "Избранное"
+App -> BFF: Запрос списка товаров для user_id, которые добавлены в избранное
+BFF -> DB: Проверить наличие пользователя с user_id
+DB --> BFF: Пользователь с user_id найден
+BFF -> DB: Найти все товары относящиеся к этому пользователю
+DB --> BFF: Вернуть найденные товары
+BFF --> App: Отправить все избранные товары 
+App --> Пользователь: Отобразить все избранные товары
+
+alt Пользователь не найден
+BFF -> DB: Проверить наличие пользователя с user_id
+DB --> BFF: Пользователь с user_id найден
+BFF --> App: Отправить сообщение об ошибке
+App --> Пользователь: Отобразить сообщение об ошибке
+end
+
+@enduml
