@@ -1,0 +1,222 @@
+openapi: 3.0.0
+info:
+  version: 1.0.0
+  title: Избранные товары API
+  description: API для работы со страницей "Избранное"
+servers:
+  - url: https://virtserver.swaggerhub.com/SONORAME2_1/Favorites_service/1.0.0
+    description: SwaggerHub API Auto Mocking
+paths:
+  /favorites/{userId}:
+    get:
+      tags: 
+      - Избранные товары
+      summary: Получение списка избранных товаров пользователя
+      parameters:
+        - in: path
+          name: userId
+          required: true
+          description: Идентификатор пользователя
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: Успешный ответ
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/FavoriteItem'
+        '404':
+          description: Пользователь не найден
+        '500':
+          description: Внутренняя ошибка сервера
+  /favorites/{userId}/{itemId}:
+    delete:
+      tags: 
+        - Избранные товары
+      summary: Удаление товара из избранного
+      parameters:
+        - in: path
+          name: userId
+          required: true
+          description: Идентификатор пользователя
+          schema:
+            type: integer
+            format: int64
+        - in: path
+          name: itemId
+          required: true
+          description: Идентификатор товара
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: Успешное удаление
+        '400':
+          description: Некорректные данные запроса
+        '404':
+          description: Пользователь или товар не найдены
+        '500':
+          description: Внутренняя ошибка сервера
+  /cart:
+    post:
+      tags: 
+      - Избранные товары
+      summary: Добавление товара в корзину
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                userId:
+                  type: integer
+                  format: int64
+                  description: Идентификатор пользователя
+                itemId:
+                  type: integer
+                  format: int64
+                  description: Идентификатор товара
+      responses:
+        '200':
+          description: Успешное добавление в корзину
+        '400':
+          description: Некорректные данные запроса
+        '404':
+          description: Пользователь или товар не найдены
+        '500':
+          description: Внутренняя ошибка сервера
+  /cart/{userId}/{itemId}:
+    delete:
+      tags: 
+      - Избранные товары
+      summary: Удаление товара из корзины
+      parameters:
+        - in: path
+          name: userId
+          required: true
+          description: Идентификатор пользователя
+          schema:
+            type: integer
+            format: int64
+        - in: path
+          name: itemId
+          required: true
+          description: Идентификатор товара
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: Успешное удаление из корзины
+        '400':
+          description: Некорректные данные запроса
+        '404':
+          description: Пользователь или товар не найдены
+        '500':
+          description: Внутренняя ошибка сервера
+  /compare:
+    post:
+      tags: 
+      - Избранные товары
+      summary: Добавление товара в сравнение
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                userId:
+                  type: integer
+                  format: int64
+                  description: Идентификатор пользователя
+                itemId:
+                  type: integer
+                  format: int64
+                  description: Идентификатор товара
+      responses:
+        '200':
+          description: Успешное добавление в сравнение
+        '400':
+          description: Некорректные данные запроса
+        '404':
+          description: Пользователь или товар не найдены
+        '500':
+          description: Внутренняя ошибка сервера
+  /compare/{userId}/{itemId}:  
+    delete:
+      tags: 
+      - Избранные товары
+      summary: Удаление товара из сравнения
+      parameters:
+        - in: path
+          name: userId
+          required: true
+          description: Идентификатор пользователя
+          schema:
+            type: integer
+            format: int64
+        - in: path
+          name: itemId
+          required: true
+          description: Идентификатор товара
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: Успешное удаление из сравнения
+        '400':
+          description: Некорректные данные запроса
+        '404':
+          description: Пользователь или товар не найдены
+        '500':
+          description: Внутренняя ошибка сервера
+components:
+  schemas:
+    FavoriteItem:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+          description: Идентификатор товара
+        name:
+          type: string
+          description: Наименование товара
+        image:
+          type: string
+          description: Ссылка на изображение товара
+          format: uri
+        currentPrice:
+          type: number
+          format: float
+          description: Текущая цена товара
+        oldPrice:
+          type: number
+          format: float
+          description: Старая цена товара
+        rating:
+          type: number
+          format: float
+          description: Рейтинг товара
+        category_id:
+          type: integer
+          description: Идентификатор категории товара
+        availability:
+          type: boolean
+          format: int64
+          description: Наличие товара
+  securitySchemes:
+    apiKey:
+      type: apiKey
+      name: apiKey
+      in: query
+security:
+  - apiKey: []
