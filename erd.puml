@@ -1,0 +1,46 @@
+@startuml
+!define Table(x) entity x << (T,#FFAAAA) >>
+!define PrimaryKey(x) <u>x</u>
+!define ForeignKey(x) <b>x</b>
+!define AutoIncrement(x) <size:10><i>x</i></size>
+
+Table(Пользователь) {
+  PrimaryKey(id) AutoIncrement(id) UUID
+  --
+  Имя VARCHAR
+  Email VARCHAR
+  Пароль VARCHAR
+}
+
+Table(Товар) {
+  PrimaryKey(id) AutoIncrement(id) UUID
+  --
+  Название VARCHAR
+  Описание TEXT
+  ForeignKey(категория_id) UUID
+  Изображение BASE64
+  Характеристики TEXT
+  Текущая_цена DECIMAL
+  Старая_цена DECIMAL
+  Рейтинг DECIMAL
+  Наличие BOOLEAN
+}
+
+Table(Избранные_товары) {
+  PrimaryKey(id) AutoIncrement(id) UUID
+  --
+  ForeignKey(пользователь_id) UUID
+  ForeignKey(товар_id) INT
+  Дата_добавления TIMESTAMP
+}
+
+Table(Категория_товаров) {
+  PrimaryKey(id) AutoIncrement(id) UUID
+  --
+  Название VARCHAR
+}
+
+Пользователь ||--{ Избранные_товары
+Товар ||--{ Избранные_товары
+Товар }--|| Категория_товаров
+@enduml
